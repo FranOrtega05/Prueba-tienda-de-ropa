@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moda Cósmica - Tienda Simple</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilo base para asegurar que la cuadrícula se adapte */
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <header class="sticky top-0 z-10 bg-indigo-700 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-white">Moda Cósmica (Simple)</h1>
+            <button id="cart-button" class="relative p-2 rounded-full text-white bg-indigo-600 hover:bg-indigo-500 transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">
+                    0
+                </span>
+            </button>
+        </div>
+    </header>
+
+    <main class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">Colección Básica</h2>
+        
+        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+            </div>
+
+        <div id="modal-container" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full text-center">
+                <p id="modal-message" class="text-xl font-semibold text-gray-800 mb-4"></p>
+                <button onclick="hideModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">Cerrar</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- 1. DATOS SIMPLES DE PRODUCTOS ---
+        const products = [
+            { id: 1, name: "Chaqueta Voyager", price: 89.99, image: "https://placehold.co/400x500/000000/FFFFFF?text=CHAQUETA" },
+            { id: 2, name: "Camiseta Nebulosa", price: 34.50, image: "https://placehold.co/400x500/1D4ED8/FFFFFF?text=CAMISETA" },
+            { id: 3, name: "Pantalón Lunar Cargo", price: 65.00, image: "https://placehold.co/400x500/059669/FFFFFF?text=PANTALON" },
+            { id: 4, name: "Sudadera Cometa", price: 55.99, image: "https://placehold.co/400x500/BE123C/FFFFFF?text=SUDADERA" },
+        ];
+
+        // --- 2. ESTADO GLOBAL ---
+        let cartItemCount = 0;
+        const cartCountElement = document.getElementById('cart-count');
+        const productGrid = document.getElementById('product-grid');
+        const modalContainer = document.getElementById('modal-container');
+        const modalMessage = document.getElementById('modal-message');
+
+        // --- 3. FUNCIONES DE LÓGICA ---
+        
+        // Muestra un mensaje simple en un modal
+        function showModal(message) {
+            modalMessage.textContent = message;
+            modalContainer.classList.remove('hidden');
+            modalContainer.classList.add('flex');
+            setTimeout(hideModal, 3000); // Cierra automáticamente después de 3 segundos
+        }
+
+        function hideModal() {
+            modalContainer.classList.add('hidden');
+            modalContainer.classList.remove('flex');
+        }
+
+        // Agrega un producto al carrito (simulado)
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                cartItemCount++;
+                cartCountElement.textContent = cartItemCount;
+                showModal(`¡"${product.name}" añadido al carrito!`);
+            }
+        }
+
+        // Renderiza las tarjetas de producto
+        function renderProducts() {
+            productGrid.innerHTML = products.map(product => `
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                    <img src="${product.image}" alt="${product.name}" 
+                         class="w-full h-64 object-cover"
+                         onerror="this.onerror=null;this.src='https://placehold.co/400x500/1F2937/FFFFFF?text=No+Imagen';"
+                    >
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-1">${product.name}</h3>
+                        <p class="text-2xl font-bold text-indigo-600 mb-3">$${product.price.toFixed(2)}</p>
+                        <button 
+                            onclick="addToCart(${product.id})" 
+                            class="w-full bg-indigo-600 text-white font-medium py-2 rounded-lg hover:bg-indigo-700 transition"
+                        >
+                            Añadir al Carrito
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- 4. INICIALIZACIÓN ---
+        window.onload = function() {
+            renderProducts();
+
+            // Mensaje al hacer clic en el botón del carrito (simulado)
+            document.getElementById('cart-button').addEventListener('click', () => {
+                showModal(`Tienes ${cartItemCount} artículos en tu carrito.`);
+            });
+        };
+    </script>
+</body>
+</html>
+```eof
+
+**Siguiente Paso:**
+
+1.  **Guarda** el código anterior como `index.html` en tu computadora.
+2.  **Súbelo** al repositorio de GitHub que creaste (Opción A o B del paso 3).
+3.  Una vez subido, ve a **Vercel** para **"Add New Project"** e **"Import"** el repositorio.
+
+¿Listo para confirmar la subida del `index.html` a GitHub y continuar con Vercel?
